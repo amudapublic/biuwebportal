@@ -10,7 +10,7 @@ export class AuthServiceService {
 
   constructor(private http:HttpClient,private cookieService:CookieService) { }
   AuthCheck(data: AuthData) {
-    return this.http.post("/api/adminLogin",data)
+    return this.http.post("https://biu-backened.herokuapp.com/adminLogin",data)
     
 
   }

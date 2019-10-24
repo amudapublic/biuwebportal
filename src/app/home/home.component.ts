@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   requests: AppointmentReq[];
 
   subscription: Subscription;
-  source = interval(5000);
+  source = interval(10000000);
   text = 'Your Text Here';
 
 //////////////////////

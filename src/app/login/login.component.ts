@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   errorText = '';
   isError = false;
   ngOnInit() {
-
+    
     this.loginGroup = new FormGroup({
       'username': new FormControl(''),
       'password': new FormControl(''),
@@ -25,6 +25,10 @@ export class LoginComponent implements OnInit {
 
 
     });
+    if(this.cookieService.get("token")!=""){
+      this.route.navigate(["home"])
+      
+    }
   }
 
   error_message_from_server: string;
@@ -37,7 +41,7 @@ export class LoginComponent implements OnInit {
 
     }
     this.authService.AuthCheck(loginInfo).subscribe(result => {
-      console.log(result)
+      // console.log(result)
       if (result["code"] == 200) {
         this.cookieService.set("token", result["token"])
         this.cookieService.set("name", result["name"])
