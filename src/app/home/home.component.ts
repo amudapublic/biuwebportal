@@ -20,32 +20,32 @@ export interface DialogData {
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
-  constructor(private progress:NgProgress,private reqService: RequestsService, private route: Router, public dialog: MatDialog, private cookieService: CookieService) { }
+  constructor(private progress: NgProgress, private reqService: RequestsService, private route: Router, public dialog: MatDialog, private cookieService: CookieService) { }
   requests: AppointmentReq[];
 
   subscription: Subscription;
-  source = interval(10000000);
+  source = interval(5000);
   text = 'Your Text Here';
 
-//////////////////////
-startedClass = false;
-completedClass = false;
-preventAbuse = false;
-onStarted() {
-  this.startedClass = true;
-  setTimeout(() => {
-    this.startedClass = false;
-  }, 800);
-}
+  //////////////////////
+  startedClass = false;
+  completedClass = false;
+  preventAbuse = false;
+  onStarted() {
+    this.startedClass = true;
+    setTimeout(() => {
+      this.startedClass = false;
+    }, 800);
+  }
 
-onCompleted() {
-  this.completedClass = true;
-  setTimeout(() => {
-    this.completedClass = false;
-  }, 800);
-}
+  onCompleted() {
+    this.completedClass = true;
+    setTimeout(() => {
+      this.completedClass = false;
+    }, 800);
+  }
 
-/////////////////////
+  /////////////////////
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
@@ -85,7 +85,7 @@ onCompleted() {
 
   rejectReq(uid) {
     this.progress.start();
-    
+
     this.subscription.unsubscribe()
 
     var name = '';
@@ -104,8 +104,8 @@ onCompleted() {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.reqService.rejectReq(uid, result).subscribe(data => {
-      this.progress.complete()
-         
+          this.progress.complete()
+
           this.refreshReq(true);
           this.subscribe()
 
@@ -132,31 +132,59 @@ onCompleted() {
     this.progress.start();
 
     this.subscription.unsubscribe()
-    this.reqService.removeReq(uid).subscribe(data=>{
+    this.reqService.removeReq(uid).subscribe(data => {
       this.refreshReq(true);
       this.subscribe()
     })
-    
+
   }
   startReq(uid) {
     this.progress.start();
 
     this.subscription.unsubscribe()
-    this.reqService.startReq(uid).subscribe(data=>{
+    this.reqService.startReq(uid).subscribe(data => {
       this.refreshReq(true);
       this.subscribe()
     })
-    
+
   }
   endReq(uid) {
     this.progress.start();
 
     this.subscription.unsubscribe()
-    this.reqService.endReq(uid).subscribe(data=>{
+    this.reqService.endReq(uid).subscribe(data => {
       this.refreshReq(true);
       this.subscribe()
     })
-    
+
+  }
+  complete(uid) {
+    var name = '';
+    this.requests.some(req => {
+      if (req.uid === uid) {
+        name = req.name;
+        return true;
+      }
+    })
+
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      width: '25rem',
+      data: { name: name, message: "yes" }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.reqService.completeReq(uid).subscribe(data => {
+          this.progress.complete()
+
+          this.refreshReq(true);
+          this.subscribe()
+
+        })
+      }
+    });
+
+
   }
 
   undoReject(uid) {
@@ -171,9 +199,9 @@ onCompleted() {
     })
 
   }
-  refreshReq(b:boolean) {
-    if(b){
-    this.progress.start()
+  refreshReq(b: boolean) {
+    if (b) {
+      this.progress.start()
 
     }
 
@@ -201,8 +229,8 @@ onCompleted() {
       });
       // console.log(allRequests)
       this.requests = allRequests
-      if(b){
-      this.progress.complete()
+      if (b) {
+        this.progress.complete()
 
       }
     });//remove this and add refresh logic
@@ -218,6 +246,24 @@ export class RejectDialog {
 
   constructor(
     public dialogRef: MatDialogRef<RejectDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+}
+
+
+@Component({
+  selector: 'confirm-dialog',
+  templateUrl: 'confirmDialog.html',
+  styleUrls: ['reject.scss']
+})
+export class ConfirmDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<ConfirmDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
 
   onNoClick(): void {

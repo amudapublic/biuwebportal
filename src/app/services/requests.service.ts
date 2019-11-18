@@ -64,8 +64,14 @@ export class RequestsService {
 
   }
 
+  completeReq(id){
+    return this.http.post(this.url + "completeAppointment", { "token": this.cookieService.get("token"), "appointmentId": id })
+
+  }
+
   sendMsg(msg) {
     return this.http.post(this.url + "sendAll", { "token": this.cookieService.get("token"), "content": msg })
 
   }
+
 }

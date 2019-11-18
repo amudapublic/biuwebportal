@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CookieService } from 'ngx-cookie-service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HomeComponent, RejectDialog } from './home/home.component';
+import { HomeComponent, RejectDialog, ConfirmDialog } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule, MatFormFieldModule, MatRadioModule, MatTabsModule,
@@ -24,7 +24,8 @@ import { NgProgressHttpModule } from '@ngx-progressbar-rj/http';
     PagenotfoundComponent,
     HomeComponent,
     RejectDialog,
-    SendMsgComponent
+    SendMsgComponent,
+    ConfirmDialog
   ],
   imports: [
     MatDialogModule,
@@ -50,7 +51,7 @@ import { NgProgressHttpModule } from '@ngx-progressbar-rj/http';
     NgProgressHttpModule
 
   ],
-  entryComponents:[RejectDialog,SendMsgComponent],
+  entryComponents:[RejectDialog,SendMsgComponent,ConfirmDialog],
   providers: [CookieService],
   bootstrap: [AppComponent]
 })

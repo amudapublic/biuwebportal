@@ -18,7 +18,7 @@
                 alt="Photo of a student">
             <img mat-card-image *ngIf="request.tou=='teacher'" src="./assets/images/teacher.png"
                 alt="Photo of a teacher">
-            <mat-card-content class="horizontal" style="text-align: center;">
+            <mat-card-content class="horizontal" (click)="complete(request.uid)" style="text-align: center; cursor: pointer;">
                 <div>
                     <mat-card>
                         <div>
@@ -40,6 +40,7 @@
                 <button mat-button class="accept" (click)="startReq(request.uid)">START</button>
                 <button mat-button class="reject" (click)="endReq(request.uid)">END</button>
                 <button mat-button class="undo" (click)="undoReq(request.uid)">UNDO</button>
+
 
             </mat-card-actions>
             <mat-card-actions style="text-align: center;" *ngIf="request.isRejected">
